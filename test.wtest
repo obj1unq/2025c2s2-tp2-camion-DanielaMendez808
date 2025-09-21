@@ -1,0 +1,45 @@
+import camion.*
+import cosas.*
+describe "Test camion de transporte"{
+    test "El camion"{
+        camion.cargar(bumblebee)
+        assert.equals(#{bumblebee}, camion.cosas())
+        camion.cargar(knightRider)
+        assert.equals(#{bumblebee,knightRider}, camion.cosas())
+        camion.descargar(bumblebee)
+        assert.equals(#{knightRider}, camion.cosas())
+        assert.throwsException({camion.cargar(knightRider)})
+        assert.throwsException({camion.descargar(bumblebee)})
+    }
+    test "Todo peso par"{
+        camion.cargar(bumblebee)
+        cosas.arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+        assert.that(camion.pesoDeTodasLasCosasEsPar())
+        camion.descargar(arenaAGranel)
+        cosas.arenaAGranel.peso(51)
+        camion.cargar(arenaAGranel)
+        assert.notThat(camion.pesoDeTodasLasCosasEsPar())
+    }
+    test "hay alguno que pesa parte 1"{
+        camion.cargar(bumblebee)
+        cosas.arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+        assert.equals(50,cosas.arenaAGranel.peso())
+    }
+    test "hay alguno que pesa parte 2"{
+        camion.cargar(bumblebee)
+        cosas.arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+        assert.that(camion.hayAlgoQuePesa(50))
+        assert.that(camion.hayAlgoQuePesa(800))
+        assert.notThat(camion.hayAlgoQuePesa(500))
+    }
+    test "exceso de peso"{
+        
+    }
+
+
+
+
+}

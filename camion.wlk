@@ -33,9 +33,10 @@ object camion {
 		return (num%2 == 0)
 	}
 	//con find si no encuentra algo devuelve null, por eso el assert cuando espera false y recibe null pone error,mientras que con any, si no encuentra lo que busca manda un false que con ese si puedo usar assert que solo entiende con booleanos(false,true).
-	//method hayAlgoQuePesa(num){
-	//	return self.cosas().any{cosa => self.estoPesa(cosa,num)}
-	//}
+	method hayAlgoQuePesa(num){
+		return self.cosas().any{cosa => cosa.pesa(num)}
+	}
+
 	method hayCosaQuePesaEntre(num1,num2){
 		return self.cosas().any{cosa => (cosa.peso()> num1 && cosa.peso()< num2)}
 	}

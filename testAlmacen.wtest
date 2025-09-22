@@ -1,0 +1,40 @@
+import cosas.*
+import camion.*
+describe "ultimo ejemplo"{
+    method initialize() {
+        almacen.cargar(knightRider)
+        almacen.cargar(residuosRadioactivos)
+        camion.cargar(bumblebee)
+        camion.cargar(arenaAGranel)
+        cosas.arenaAGranel.peso(50)
+    }
+    test "caso: ruta 9 exitoso"{
+        camion.transportar(almacen,ruta9)
+        assert.equals(#{knightRider,residuosRadioactivos,bumblebee,arenaAGranel}, almacen.cosasEnAlmacen())
+        assert.equals(#{},camion.cosas())
+    }
+    test "caso: ruta 9 fallido por peligrosidad"{
+        cosas.bumblebee.transformado("robot")
+        assert.throwsException({camion.transportar(almacen,ruta9)})
+        assert.equals(#{knightRider,residuosRadioactivos}, almacen.cosasEnAlmacen())
+        assert.equals(#{bumblebee,arenaAGranel}, camion.cosas())
+    }
+    test "caso : ruta 9 fallido por exceso de peso"{
+        cosas.arenaAGranel.peso(2000)
+        assert.throwsException({camion.transportar(almacen,ruta9)})
+        assert.equals(#{knightRider,residuosRadioactivos}, almacen.cosasEnAlmacen())
+        assert.equals(#{bumblebee,arenaAGranel}, camion.cosas())
+    }
+    test "caso : caminos vecinales exitoso"{
+        caminosVecinales.pesoPermitido(2000)
+        camion.transportar(almacen, caminosVecinales)
+        assert.equals(#{knightRider,residuosRadioactivos,bumblebee,arenaAGranel}, almacen.cosasEnAlmacen())
+        assert.equals(#{}, camion.cosas())
+    }
+    test "caso: caminos vecinales fallido"{
+        caminosVecinales.pesoPermitido(300)
+        assert.throwsException({camion.transportar(almacen,caminosVecinales)})
+        assert.equals(#{knightRider,residuosRadioactivos}, almacen.cosasEnAlmacen())
+        assert.equals(#{bumblebee,arenaAGranel}, camion.cosas())        
+    }
+}
